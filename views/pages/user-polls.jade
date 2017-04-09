@@ -1,0 +1,39 @@
+//
+   Created by DENIS on 08/04/2017.
+
+extends ../layout
+
+block content
+    include poll-tf
+    h2 Polls
+    ul
+        each poll in polls
+            li
+                h3= poll.title
+                label
+                    if poll.active == true
+                        input(type='checkbox' checked value='active')
+                        span Active
+                    else
+                        input(type='checkbox' value='active')
+                        span Active
+                ul
+                    if poll.type == 'tf'
+                        each option in poll.options
+                            li
+                                label
+                                    input(type='radio')
+                                    span= option.name
+                    if poll.type == 'mc'
+                        each option in poll.options
+                            li
+                                label
+                                    input(type='checkbox')
+                                    span= option.name
+                //if poll.type == 'mc'
+                //    include poll-mc
+
+    //form(action='/login' class='pure-form pure-form-stacked' method='post')
+    //    input(id='username' name='username' placeholder='Username' required type='text' value='denis')
+    //    input(id='password' name='password' placeholder='Password' required type='password' value='password')
+    //    button(class='pure-button pure-button-primary' id='submit' type='submit') Login

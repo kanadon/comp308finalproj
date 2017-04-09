@@ -1,0 +1,12 @@
+//
+   Created by DENIS on 08/04/2017.
+
+extends ../layout
+
+block content
+    h2 Login
+    p= message
+    form(action='/user/login' class='pure-form pure-form-stacked' method='post')
+        input(id='username' name='username' placeholder='Username' required type='text' value='denis')
+        input(id='password' name='password' placeholder='Password' required type='password' value='password')
+        button(class='pure-button pure-button-primary' id='submit' type='submit') Login

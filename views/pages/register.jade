@@ -1,0 +1,13 @@
+//
+   Created by DENIS on 08/04/2017.
+
+extends ../layout
+
+block content
+    h2 Register
+    div= message
+    form(action='/user/register' class='pure-form pure-form-stacked' method='post')
+        input(id='username' name='username' placeholder='Username' required type='text')
+        input(id='email' name='email' placeholder='Email' required type='email')
+        input(id='password' name='password' placeholder='Password' required type='password')
+        button(class='pure-button pure-button-primary' id='submit' type='submit') Register
