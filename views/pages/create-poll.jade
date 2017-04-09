@@ -1,0 +1,24 @@
+//
+   Created by DENIS on 09/04/2017.
+
+extends ../layout
+
+block content
+    script(src='/javascripts/create-poll.js')
+    h2 Create a poll
+    p= message
+    form(action='/poll/create' class='pure-form pure-form-stacked create-poll-form' method='post')
+        input(id='uniqeID' name='uniqueID' placeholder='Unique ID' required type='text')
+        select(class='type-selector' id='type' name='type')
+            option(value='tf' selected) True/False
+            option(value='mc') M/C
+        input(id='title' name='title' placeholder='Title' required type='text')
+        input(class='tf-input' id='true' name='true' placeholder='True option text' required type='text')
+        input(class='tf-input' id='false' name='false' placeholder='False option text' required type='text')
+        input(class='mc-input' disabled hidden name='option1' placeholder='Option 1' type='text')
+        input(class='mc-input' disabled hidden name='option2' placeholder='Option 2' type='text')
+        input(class='mc-input' disabled hidden name='option3' placeholder='Option 3' type='text')
+        input(class='mc-input' disabled hidden name='option4' placeholder='Option 4' type='text')
+        input(id='startTime' name='startTime' placeholder='Start time' required type='text' value= 'Sun, 09 Apr 2017 23:00:00 GMT')
+        input(id='endTime' name='endTime' placeholder='End time' type='text')
+        button(class='pure-button pure-button-primary' id='submit' type='submit') Create poll

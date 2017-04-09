@@ -1,0 +1,24 @@
+//
+   Created by DENIS on 09/04/2017.
+
+extends ../layout
+
+block content
+    p= message
+    if poll !== undefined
+        h2=poll.title
+        form(action=`/poll/vote/${poll.uniqueID}` class='pure-form pure-form-stacked' method='post')
+            ul
+                if poll.type == 'tf'
+                    each option in poll.options
+                        li
+                            label
+                                input(name=poll.uniqueID type='radio' value=option.name)
+                                span= option.name
+                if poll.type == 'mc'
+                    each option in poll.options
+                        li
+                            label
+                                input(name=option.name type='checkbox' value=option.name)
+                                span= option.name
+            button(class='pure-button pure-button-primary' id='submit' type='submit') Vote

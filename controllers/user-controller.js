@@ -14,10 +14,10 @@ exports.Login = function (req, res, username, password) {
     if (err || doc.length === 0)
       return res.redirect('/login');
 
-      var session = req.session;
-      session.authenticated = true;
-      session.user = doc[0];
-      res.redirect('/user');
+    var session = req.session;
+    session.authenticated = true;
+    session.user = doc[0];
+    res.redirect('/user/account');
   });
 };
 
@@ -26,6 +26,42 @@ exports.ShowAccountInfo = function (req, res) {
     return res.redirect('/login');
 
   res.render('pages/user', {user: req.session.user});
+};
+
+exports.ModifyAccountInfo = function (req, res, email, password) {
+  if (!req.session.user)
+    return res.redirect('/login');
+
+  var user = req.session.user;
+
+  if (email == user.email && password == user.password) {
+    return res.render('pages/user', {message: 'No changes to save.', user: req.session.user});
+  }
+  else if (email != user.email) {
+
+    dbhelper.IsEmailUnique(email, function (result) {
+      if (!result)
+        return res.render('pages/user', {message: 'This email has been taken.', user: req.session.user});
+
+      dbhelper.UpdateUser(user.username, email, password, function (err, result) {
+        if (err)
+          return res.render('pages/user', {message: 'Something went wrong...', user: req.session.user});
+
+        user.email = email;
+        user.password = password;
+        return res.render('pages/user', {message: 'Changes saved', user: req.session.user});
+      });
+    });
+  }
+  else if (password != user.password) {
+    dbhelper.UpdateUser(user.username, user.email, password, function (err, result) {
+      if (err)
+        return res.render('pages/user', {message: 'Something went wrong...', user: req.session.user});
+
+      user.password = password;
+      return res.render('pages/user', {message: 'Changes saved', user: req.session.user});
+    });
+  }
 };
 
 exports.Register = function (req, res, username, email, password) {
@@ -52,7 +88,7 @@ exports.Register = function (req, res, username, email, password) {
         email: email,
         password: password
       }, function (err, result) {
-        if(err)
+        if (err)
           return res.render('pages/register', {message: 'Something went wrong...'});
 
         req.session.user = result;
@@ -62,12 +98,13 @@ exports.Register = function (req, res, username, email, password) {
   });
 
 
-
 };
 
-exports.ShowMyPolls = function (req, res) {
+exports.ShowUserPolls = function (req, res) {
   if (!req.session.user)
     return res.redirect('/login');
 
-  res.render('pages/user-polls', {polls: req.session.user.polls});
+  dbhelper.GetPollsByUser(req.session.user.username, function (polls) {
+    res.render('pages/user-polls', {polls: polls});
+  });
 };

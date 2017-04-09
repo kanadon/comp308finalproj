@@ -10,6 +10,7 @@ var session = require('express-session');
 // routes
 var home = require('./routes/home');
 var user = require('./routes/user');
+var poll = require('./routes/poll');
 
 //helpers
 require('./helpers/db').InitializeConnection();
@@ -43,6 +44,7 @@ app.use(session({
 // routes
 app.use('/', home);
 app.use('/user', user);
+app.use('/poll', poll);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
