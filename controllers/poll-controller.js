@@ -33,7 +33,8 @@ exports.CreatePoll = function (req, res) {
       uniqueID: req.body.uniqueID,
       type: req.body.type,
       title: req.body.title,
-      startTime: Date.parse(req.body.startTime)
+      startTime: Date.parse(req.body.startTime),
+      totalResponses: 0
     };
 
     if (newPoll.type == 'tf') {
@@ -86,7 +87,8 @@ exports.AnswerPoll = function (req, res, pollID) {
       return res.render('pages/poll', {message: 'Cannot find poll.'});
 
     if (poll.type == 'tf') {
-      // increment answer
+      // increment answers and responses
+      poll.totalResponses++;
       var selectedAnswer = req.body[pollID];
 
       poll.options.forEach(function (option) {
@@ -95,7 +97,9 @@ exports.AnswerPoll = function (req, res, pollID) {
       });
     }
     else if (poll.type == 'mc') {
-      // increment answers
+      // increment answers and responses
+      poll.totalResponses++;
+
       for (var answer in req.body)
         poll.options.forEach(function (option) {
           if (option.name == answer)
@@ -103,10 +107,25 @@ exports.AnswerPoll = function (req, res, pollID) {
         });
     }
 
-    dbhelper.UpdatePoll(pollID, poll.options, function (poll) {
+    dbhelper.UpdatePoll(pollID, poll.options, poll.totalResponses, function (poll) {
       return res.render('pages/poll', {message: 'Thank you for the vote!'});
     });
 
 
+  });
+};
+
+exports.ShowPollReport = function (req, res, pollID) {
+  if (!req.session.user)
+    return res.redirect('/login');
+
+  dbhelper.GetPollByID(pollID, function (poll) {
+    var totalAnswers = 0;
+
+    poll.options.forEach(function (option) {
+      totalAnswers += option.answers;
+    });
+
+    return res.render('pages/poll-report', {poll: poll, totalAnswers: totalAnswers})
   });
 };

@@ -1,0 +1,31 @@
+//
+   Created by DENIS on 09/04/2017.
+
+extends ../layout
+
+block content
+    div#report
+        h2= poll.title
+        script(src='/javascripts/print-poll-report.js')
+        p Total responses
+        table.pure-table
+            thead
+                tr
+                    th Option
+                    th Answers
+            tbody
+                each option in poll.options
+                    tr
+                        td= option.name
+                        td= option.answers
+            tfoot
+                tr
+                    td Total answers
+                    td= totalAnswers
+                tr
+                    td Total responses
+                    td= poll.totalResponses
+
+    button(id='print' type='button').pure-button.pure-button-primary Print report
+
+

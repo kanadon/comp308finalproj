@@ -4,7 +4,7 @@
 extends ../layout
 
 block content
-    h2 Polls
+    h2 My Polls
     a(href=`/poll/create`) Create
     ul
         each poll in polls
@@ -12,7 +12,7 @@ block content
                 h3= poll.title
                 ul
                     li
-                        a(href=`/user/polls/edit/${poll.uniqueID}`) Edit
+                        a(href=`/poll/report/${poll.uniqueID}`) Report
                     li
                         a(href=`/poll/vote/${poll.uniqueID}`) Live link
 

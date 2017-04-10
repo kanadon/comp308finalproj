@@ -104,7 +104,7 @@ module.exports.GetPollByID = function (pollID, callback) {
   });
 };
 
-module.exports.UpdatePoll = function (pollID, options, callback) {
+module.exports.UpdatePoll = function (pollID, options, totalResponses, callback) {
   if (!dbObj) throw new Error('database not initialized');
 
   dbObj.collection('polls').findAndModify(
@@ -114,6 +114,7 @@ module.exports.UpdatePoll = function (pollID, options, callback) {
     [['_id', 'asc']],
     {
       $set: {
+        totalResponses: totalResponses,
         options: options
       }
     },

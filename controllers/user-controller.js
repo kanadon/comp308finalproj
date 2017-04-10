@@ -92,7 +92,7 @@ exports.Register = function (req, res, username, email, password) {
           return res.render('pages/register', {message: 'Something went wrong...'});
 
         req.session.user = result;
-        return res.redirect('/user');
+        return res.redirect('/user/account');
       });
     });
   });
