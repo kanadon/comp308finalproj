@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
   var mcInputs = document.querySelectorAll(".mc-input");
   var typeSelector = document.querySelector(".type-selector");
 
+  // when user changes poll type, show/hide relevant/irrelevant fields for the selected type
+
   typeSelector.addEventListener("change", function () {
     var type = this[this.selectedIndex].value;
     if(type == 'tf'){

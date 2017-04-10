@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var printBtn = document.querySelector("#print");
   var reportTable = document.querySelector("#report");
 
+  // open a new window, copy the report and print
 
   printBtn.addEventListener("click", function () {
     var printWindow = window.open("", "Print report");

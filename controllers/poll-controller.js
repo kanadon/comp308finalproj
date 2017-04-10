@@ -2,6 +2,8 @@
  * Created by DENIS on 09/04/2017.
  */
 
+// this controller handles all logic regarding polls (creation, submission, etc.)
+
 var dbhelper = require('../helpers/db');
 
 exports.ShowPoll = function (req, res, pollID) {

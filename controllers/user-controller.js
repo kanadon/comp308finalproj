@@ -1,6 +1,9 @@
 /**
  * Created by DENIS on 08/04/2017.
  */
+
+// this controller handles all user related logic (creation, modification, logging in, etc.)
+
 var dbhelper = require('../helpers/db');
 
 exports.Login = function (req, res, username, password) {

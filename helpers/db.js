@@ -2,6 +2,12 @@
  * Created by DENIS on 08/04/2017.
  */
 
+/*
+  this helper connects to the database and reuses the same db object for future interactions
+  besides updating and creating users/polls, it contains useful functions such as checking for uniqueness of ID's,
+  emails, etc.
+*/
+
 var MongoClient = require('mongodb').MongoClient;
 
 var url = "mongodb://admin:password@ds113670.mlab.com:13670/pollposition";
