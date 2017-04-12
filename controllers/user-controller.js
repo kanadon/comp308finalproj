@@ -15,7 +15,7 @@ exports.Login = function (req, res, username, password) {
 
   user.toArray(function (err, doc) {
     if (err || doc.length === 0)
-      return res.redirect('/login');
+      return res.render('pages/login', {message: 'Wrong credentials.'});
 
     var session = req.session;
     session.authenticated = true;
@@ -37,16 +37,16 @@ exports.ModifyAccountInfo = function (req, res, email, password) {
 
   var user = req.session.user;
 
-  if (email == user.email && password == user.password) {
+  if (email.toLowerCase() === user.email && password === user.password) {
     return res.render('pages/user', {message: 'No changes to save.', user: req.session.user});
   }
-  else if (email != user.email) {
+  else if (email.toLowerCase() !== user.email) {
 
     dbhelper.IsEmailUnique(email, function (result) {
       if (!result)
         return res.render('pages/user', {message: 'This email has been taken.', user: req.session.user});
 
-      dbhelper.UpdateUser(user.username, email, password, function (err, result) {
+      dbhelper.UpdateUser(user.username, email, password, function (err) {
         if (err)
           return res.render('pages/user', {message: 'Something went wrong...', user: req.session.user});
 
@@ -56,8 +56,8 @@ exports.ModifyAccountInfo = function (req, res, email, password) {
       });
     });
   }
-  else if (password != user.password) {
-    dbhelper.UpdateUser(user.username, user.email, password, function (err, result) {
+  else if (password !== user.password) {
+    dbhelper.UpdateUser(user.username, user.email, password, function (err) {
       if (err)
         return res.render('pages/user', {message: 'Something went wrong...', user: req.session.user});
 
@@ -68,43 +68,66 @@ exports.ModifyAccountInfo = function (req, res, email, password) {
 };
 
 exports.Register = function (req, res, username, email, password) {
-  var db = dbhelper.GetDB();
-  var userWithUsername = db.collection('users').find({
-    username: username
-  });
-
-  userWithUsername.toArray(function (err, doc) {
-    if (doc.length !== 0)
+  dbhelper.IsUsernameUnique(username, function (unique) {
+    if (!unique)
       return res.render('pages/register', {message: 'This username has been taken.'});
 
-    var userWithEmail = db.collection('users').find({
-      email: email
-    });
-
-    userWithEmail.toArray(function (err, doc) {
-      if (doc.length !== 0)
+    dbhelper.IsEmailUnique(email, function (unique) {
+      if (!unique)
         return res.render('pages/register', {message: 'This email has been taken.'});
 
-
-      db.collection('users').insertOne({
+      var newUser = {
         username: username,
         email: email,
         password: password
-      }, function (err, result) {
+      };
+
+      dbhelper.CreateUser(newUser, function (err) {
         if (err)
           return res.render('pages/register', {message: 'Something went wrong...'});
 
-        req.session.user = {
-          username: username,
-          email: email,
-          password: password
-        };
+        req.session.user = newUser;
         return res.redirect('/user/account');
       });
     });
   });
 
 
+  // var db = dbhelper.GetDB();
+  // var userWithUsername = db.collection('users').find({
+  //   username: username
+  // });
+  //
+  // userWithUsername.toArray(function (err, doc) {
+  //   if (doc.length !== 0)
+  //     return res.render('pages/register', {message: 'This username has been taken.'});
+  //
+  //   var userWithEmail = db.collection('users').find({
+  //     email: email
+  //   });
+  //
+  //   userWithEmail.toArray(function (err, doc) {
+  //     if (doc.length !== 0)
+  //       return res.render('pages/register', {message: 'This email has been taken.'});
+  //
+  //
+  //     db.collection('users').insertOne({
+  //       username: username,
+  //       email: email,
+  //       password: password
+  //     }, function (err, result) {
+  //       if (err)
+  //         return res.render('pages/register', {message: 'Something went wrong...'});
+  //
+  //       req.session.user = {
+  //         username: username,
+  //         email: email,
+  //         password: password
+  //       };
+  //       return res.redirect('/user/account');
+  //     });
+  //   });
+  // });
 };
 
 exports.ShowUserPolls = function (req, res) {

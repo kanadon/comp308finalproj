@@ -1,13 +1,13 @@
 //
    Created by DENIS on 09/04/2017.
 
-extends ../layout
+extends ../templates/layout
 
 block content
     div#report
-        h2= poll.title
-        script(src='/javascripts/print-poll-report.js')
-        table.pure-table
+        h2 Poll report
+        h3= poll.title
+        table.pure-table.poll-report-table
             thead
                 tr
                     th Option
@@ -28,3 +28,4 @@ block content
     button(id='print' type='button').pure-button.pure-button-primary Print report
 
 
+    script(src='/javascripts/print-poll-report.js')

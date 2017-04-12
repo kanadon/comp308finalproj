@@ -1,20 +1,23 @@
 //
    Created by DENIS on 08/04/2017.
 
-extends ../layout
+extends ../templates/layout
 
 block content
     h2 My Polls
-    a(href=`/poll/create`) Create
-    ul
-        each poll in polls
-            li
-                h3= poll.title
-                ul
-                    li
-                        a(href=`/poll/report/${poll.uniqueID}`) Report
-                    li
-                        a(href=`/poll/vote/${poll.uniqueID}`) Live link
-
-
-
+    p= message
+    a.pure-button(href='/poll/create') Create
+    table.pure-table
+        tbody
+            each poll in polls
+                tr
+                    td
+                        span= poll.title
+                    td
+                        a.pure-button(href='/poll/report/' + poll.uniqueID) Report
+                    td
+                        a.pure-button(href='/poll/vote/' + poll.uniqueID) Live link
+                    td
+                        a.pure-button(href='/poll/delete/' + poll.uniqueID) Delete
+                    td
+                        a.pure-button(href='/poll/info/' + poll.uniqueID) Info

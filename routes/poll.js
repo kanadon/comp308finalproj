@@ -23,6 +23,14 @@ router.post('/create', function(req, res) {
   pollController.CreatePoll(req, res);
 });
 
+router.get('/delete/:id', function(req, res) {
+  pollController.DeletePoll(req, res, req.params.id);
+});
+
+router.get('/info/:id', function(req, res) {
+  pollController.ShowPollInfo(req, res, req.params.id);
+});
+
 router.get('/report/:id', function(req, res) {
   pollController.ShowPollReport(req, res, req.params.id);
 });

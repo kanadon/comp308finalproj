@@ -1,8 +1,16 @@
 body
-  padding: 50px
+  //padding: 50px
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
 a
   color: #00B7FF
+
+#wrapper
+  margin: 0 auto
+  max-width: 960px
+  text-align: center
+
+//.menu
+
 
 .company-logo
   width: 86px
@@ -11,4 +19,33 @@ a
     
 .company-logo:hover
   background-color: transparent
+  cursor: pointer
+
+form.pure-form.pure-form-stacked
+  input, select
+    margin: 10px auto
+    width: 300px
+
+//table.pure-table
+//  margin: 10px auto 20px auto
+
+form.pure-form.pure-form-stacked.poll
+  input
+    margin-right: 10px
+    width: auto
+
+.poll
+  label:hover
+    cursor: pointer
+
+table
+  margin: 10px auto 20px auto
+  td
+    text-align: left
+
+table.poll-report-table
+  td:last-of-type
+    text-align: right
+
+table.poll-table tr:hover, table.poll-table input:hover
   cursor: pointer

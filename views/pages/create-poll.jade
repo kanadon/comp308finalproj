@@ -1,7 +1,7 @@
 //
    Created by DENIS on 09/04/2017.
 
-extends ../layout
+extends ../templates/layout
 
 block content
     script(src='/javascripts/create-poll.js')
@@ -19,6 +19,10 @@ block content
         input(class='mc-input' disabled hidden name='option2' placeholder='Option 2' type='text')
         input(class='mc-input' disabled hidden name='option3' placeholder='Option 3' type='text')
         input(class='mc-input' disabled hidden name='option4' placeholder='Option 4' type='text')
-        input(id='startTime' name='startTime' placeholder='Start time' required type='text' value= 'Sun, 09 Apr 2017 23:00:00 GMT')
+        input(id='startTime' name='startTime' placeholder='Start time' required type='text' value= new Date())
         input(id='endTime' name='endTime' placeholder='End time' type='text')
+        //'Sun, 09 Apr 2017 23:00:00 GMT'
+        p
+            strong Time format:
+            =new Date()
         button(class='pure-button pure-button-primary' id='submit' type='submit') Create poll

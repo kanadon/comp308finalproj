@@ -1,0 +1,81 @@
+//
+   Created by DENIS on 12/04/2017.
+
+extends ../templates/layout
+
+block content
+    script(src='/javascripts/create-poll.js')
+    h2 Create a poll
+    p= message
+    if poll
+        table.pure-table
+            tr
+                td
+                    |Unique ID
+                td
+                    =poll.uniqueID
+            tr
+                td
+                    | Type
+                td
+                    if poll.type == 'tf'
+                        |True/False
+                    else if poll.type == 'mc'
+                        |M/C
+            if poll.type == 'tf'
+                tr
+                    td
+                        | True option name
+                    td
+                        =poll.options[0].name
+                tr
+                    td
+                        | False option name
+                    td
+                        =poll.options[1].name
+            else if poll.type == 'mc'
+                tr
+                    td
+                        | True option name
+                    td
+                        =poll.options[0].name
+                tr
+                    td
+                        | False option name
+                    td
+                        =poll.options[1].name
+                tr
+                    td
+                        | True option name
+                    td
+                        =poll.options[2].name
+                tr
+                    td
+                        | False option name
+                    td
+                        =poll.options[3].name
+            tr
+                td
+                    | Start
+                td
+                    =new Date(poll.startTime)
+            tr
+                td
+                    | End
+                td
+                    if poll.endTime
+                        =new Date(poll.endTime)
+            //select(disabled)
+            //    option(value='tf' selected) True/False
+            //    option(value='mc') M/C
+            //label
+            //    span ID
+            //    input(disabled type='text' value=poll.title)
+            //input(disabled class='tf-input' type='text')
+            //input(disabled class='tf-input' type='text')
+            //input(disabled class='mc-input' type='text')
+            //input(disabled class='mc-input' type='text')
+            //input(disabled class='mc-input' type='text')
+            //input(disabled class='mc-input' type='text')
+            //input(disabled type='text' value=poll.startTime)
+            //input(disabled type='text' value=endTime)

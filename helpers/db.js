@@ -39,7 +39,7 @@ module.exports.UpdateUser = function (username, email, password, callback) {
     [['_id', 'asc']],
     {
       $set: {
-        email: email,
+        email: email.toLowerCase(),
         password: password
       }
     },
@@ -150,6 +150,32 @@ module.exports.CreatePoll = function(poll, callback){
   if (!dbObj) throw new Error('database not initialized');
 
   dbObj.collection('polls').insertOne(poll, function (err) {
+    if (err)
+      callback(false);
+    else
+      callback(true);
+  });
+};
+
+module.exports.CreateUser = function(user, callback){
+  if (!dbObj) throw new Error('database not initialized');
+
+  user.email = user.email.toLowerCase();
+
+  dbObj.collection('users').insertOne(user, function (err) {
+    if (err)
+      callback(false);
+    else
+      callback(true);
+  });
+};
+
+module.exports.DeletePoll = function(pollID, callback){
+  if (!dbObj) throw new Error('database not initialized');
+
+  dbObj.collection('polls').remove({
+    uniqueID: pollID
+  }, function (err) {
     if (err)
       callback(false);
     else
