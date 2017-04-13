@@ -15,7 +15,7 @@ exports.Login = function (req, res, username, password) {
 
   user.toArray(function (err, doc) {
     if (err || doc.length === 0)
-      return res.render('pages/login', {message: 'Wrong credentials.'});
+      return res.render('pages/login', {message: 'Wrong credentials.', session: req.session});
 
     var session = req.session;
     session.authenticated = true;
@@ -28,7 +28,7 @@ exports.ShowAccountInfo = function (req, res) {
   if (!req.session.user)
     return res.redirect('/login');
 
-  res.render('pages/user', {user: req.session.user});
+  res.render('pages/user', {user: req.session.user, session: req.session});
 };
 
 exports.ModifyAccountInfo = function (req, res, email, password) {
@@ -38,31 +38,43 @@ exports.ModifyAccountInfo = function (req, res, email, password) {
   var user = req.session.user;
 
   if (email.toLowerCase() === user.email && password === user.password) {
-    return res.render('pages/user', {message: 'No changes to save.', user: req.session.user});
+    return res.render('pages/user', {message: 'No changes to save.', user: req.session.user, session: req.session});
   }
   else if (email.toLowerCase() !== user.email) {
 
     dbhelper.IsEmailUnique(email, function (result) {
       if (!result)
-        return res.render('pages/user', {message: 'This email has been taken.', user: req.session.user});
+        return res.render('pages/user', {
+          message: 'This email has been taken.',
+          user: req.session.user,
+          session: req.session
+        });
 
       dbhelper.UpdateUser(user.username, email, password, function (err) {
         if (err)
-          return res.render('pages/user', {message: 'Something went wrong...', user: req.session.user});
+          return res.render('pages/user', {
+            message: 'Something went wrong...',
+            user: req.session.user,
+            session: req.session
+          });
 
         user.email = email;
         user.password = password;
-        return res.render('pages/user', {message: 'Changes saved', user: req.session.user});
+        return res.render('pages/user', {message: 'Changes saved', user: req.session.user, session: req.session});
       });
     });
   }
   else if (password !== user.password) {
     dbhelper.UpdateUser(user.username, user.email, password, function (err) {
       if (err)
-        return res.render('pages/user', {message: 'Something went wrong...', user: req.session.user});
+        return res.render('pages/user', {
+          message: 'Something went wrong...',
+          user: req.session.user,
+          session: req.session
+        });
 
       user.password = password;
-      return res.render('pages/user', {message: 'Changes saved', user: req.session.user});
+      return res.render('pages/user', {message: 'Changes saved', user: req.session.user, session: req.session});
     });
   }
 };
@@ -70,11 +82,11 @@ exports.ModifyAccountInfo = function (req, res, email, password) {
 exports.Register = function (req, res, username, email, password) {
   dbhelper.IsUsernameUnique(username, function (unique) {
     if (!unique)
-      return res.render('pages/register', {message: 'This username has been taken.'});
+      return res.render('pages/register', {message: 'This username has been taken.', session: req.session});
 
     dbhelper.IsEmailUnique(email, function (unique) {
       if (!unique)
-        return res.render('pages/register', {message: 'This email has been taken.'});
+        return res.render('pages/register', {message: 'This email has been taken.', session: req.session});
 
       var newUser = {
         username: username,
@@ -84,50 +96,13 @@ exports.Register = function (req, res, username, email, password) {
 
       dbhelper.CreateUser(newUser, function (err) {
         if (err)
-          return res.render('pages/register', {message: 'Something went wrong...'});
+          return res.render('pages/register', {message: 'Something went wrong...', session: req.session});
 
         req.session.user = newUser;
         return res.redirect('/user/account');
       });
     });
   });
-
-
-  // var db = dbhelper.GetDB();
-  // var userWithUsername = db.collection('users').find({
-  //   username: username
-  // });
-  //
-  // userWithUsername.toArray(function (err, doc) {
-  //   if (doc.length !== 0)
-  //     return res.render('pages/register', {message: 'This username has been taken.'});
-  //
-  //   var userWithEmail = db.collection('users').find({
-  //     email: email
-  //   });
-  //
-  //   userWithEmail.toArray(function (err, doc) {
-  //     if (doc.length !== 0)
-  //       return res.render('pages/register', {message: 'This email has been taken.'});
-  //
-  //
-  //     db.collection('users').insertOne({
-  //       username: username,
-  //       email: email,
-  //       password: password
-  //     }, function (err, result) {
-  //       if (err)
-  //         return res.render('pages/register', {message: 'Something went wrong...'});
-  //
-  //       req.session.user = {
-  //         username: username,
-  //         email: email,
-  //         password: password
-  //       };
-  //       return res.redirect('/user/account');
-  //     });
-  //   });
-  // });
 };
 
 exports.ShowUserPolls = function (req, res) {
@@ -135,6 +110,6 @@ exports.ShowUserPolls = function (req, res) {
     return res.redirect('/login');
 
   dbhelper.GetPollsByUser(req.session.user.username, function (polls) {
-    res.render('pages/user-polls', {polls: polls});
+    res.render('pages/user-polls', {polls: polls, session: req.session});
   });
 };

@@ -10,26 +10,26 @@ var utilities = require('../helpers/utilities');
 exports.ShowPoll = function (req, res, pollID) {
   dbhelper.GetPollByID(pollID, function (poll) {
     if (poll === null)
-      return res.render('pages/poll', {message: 'Cannot find poll.'});
+      return res.render('pages/poll', {message: 'Cannot find poll.', session: req.session});
 
     var now = Date.now();
 
-    if(poll.startTime > now)
-      return res.render('pages/poll', {message: 'This poll has not started yet.'});
+    if (poll.startTime > now)
+      return res.render('pages/poll', {message: 'This poll has not started yet.', session: req.session});
 
-    else if(poll.endTime && poll.endTime < now)
-      return res.render('pages/poll', {message: 'This poll has ended.'});
+    else if (poll.endTime && poll.endTime < now)
+      return res.render('pages/poll', {message: 'This poll has ended.', session: req.session});
 
-    return res.render('pages/poll', {poll: poll});
+    return res.render('pages/poll', {poll: poll, session: req.session});
   });
 };
 
 exports.ShowPollInfo = function (req, res, pollID) {
   dbhelper.GetPollByID(pollID, function (poll) {
     if (poll === null)
-      return res.render('pages/poll-info', {message: 'Cannot find poll.'});
+      return res.render('pages/poll-info', {message: 'Cannot find poll.', session: req.session});
 
-    return res.render('pages/poll-info', {poll: poll});
+    return res.render('pages/poll-info', {poll: poll, session: req.session});
   });
 };
 
@@ -37,7 +37,7 @@ exports.ShowCreatePoll = function (req, res) {
   if (!req.session.user)
     return res.redirect('/login');
 
-  return res.render('pages/create-poll');
+  return res.render('pages/create-poll', {session: req.session});
 };
 
 exports.CreatePoll = function (req, res) {
@@ -46,7 +46,7 @@ exports.CreatePoll = function (req, res) {
 
   dbhelper.IsPollIDUnique(req.body.uniqueID, function (unique) {
     if (!unique)
-      return res.render('pages/create-poll', {message: 'This ID has been taken.'});
+      return res.render('pages/create-poll', {message: 'This ID has been taken.', session: req.session});
 
     var newPoll = {
       user: req.session.user.username,
@@ -59,8 +59,8 @@ exports.CreatePoll = function (req, res) {
     };
 
     if (newPoll.type === 'tf') {
-      if(req.body.true === req.body.false)
-        return res.render('pages/create-poll', {message: 'Options cannot be identical.'});
+      if (req.body.true === req.body.false)
+        return res.render('pages/create-poll', {message: 'Options cannot be identical.', session: req.session});
 
       newPoll.options = [
         {
@@ -74,10 +74,10 @@ exports.CreatePoll = function (req, res) {
       ]
     }
     else if (newPoll.type === 'mc') {
-      if(utilities.CheckArrayForDuplicates(
+      if (utilities.CheckArrayForDuplicates(
           [req.body.option1, req.body.option2, req.body.option3, req.body.option4]
         ))
-        return res.render('pages/create-poll', {message: 'Options cannot be identical.'});
+        return res.render('pages/create-poll', {message: 'Options cannot be identical.', session: req.session});
 
       newPoll.options = [
         {
@@ -101,13 +101,11 @@ exports.CreatePoll = function (req, res) {
 
     dbhelper.CreatePoll(newPoll, function (created) {
       if (!created)
-        return res.render('pages/create-poll', {message: 'Something went wrong...'});
+        return res.render('pages/create-poll', {message: 'Something went wrong...', session: req.session});
 
-      return res.render('pages/create-poll', {message: 'Your poll has been created.'});
+      return res.render('pages/create-poll', {message: 'Your poll has been created.', session: req.session});
     });
-
   });
-
 };
 
 exports.DeletePoll = function (req, res, pollID) {
@@ -115,18 +113,18 @@ exports.DeletePoll = function (req, res, pollID) {
     return res.redirect('/login');
 
 
-    dbhelper.DeletePoll(pollID, function (success) {
-      if(!success)
-        return res.redirect('/user/polls');
-      else
-        return res.redirect('/user/polls');
-    });
+  dbhelper.DeletePoll(pollID, function (success) {
+    if (!success)
+      return res.redirect('/user/polls');
+    else
+      return res.redirect('/user/polls');
+  });
 };
 
 exports.AnswerPoll = function (req, res, pollID) {
   dbhelper.GetPollByID(pollID, function (poll) {
     if (poll === null)
-      return res.render('pages/poll', {message: 'Cannot find poll.'});
+      return res.render('pages/poll', {message: 'Cannot find poll.', session: req.session});
 
     if (poll.type === 'tf') {
       // increment answers and responses
@@ -150,10 +148,8 @@ exports.AnswerPoll = function (req, res, pollID) {
     }
 
     dbhelper.UpdatePoll(pollID, poll.options, poll.totalResponses, function (poll) {
-      return res.render('pages/poll', {message: 'Thank you for the vote!'});
+      return res.render('pages/poll', {message: 'Thank you for the vote!', session: req.session});
     });
-
-
   });
 };
 
@@ -168,6 +164,6 @@ exports.ShowPollReport = function (req, res, pollID) {
       totalAnswers += option.answers;
     });
 
-    return res.render('pages/poll-report', {poll: poll, totalAnswers: totalAnswers})
+    return res.render('pages/poll-report', {poll: poll, totalAnswers: totalAnswers, session: req.session})
   });
 };
