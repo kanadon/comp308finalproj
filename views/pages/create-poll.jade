@@ -3,7 +3,10 @@
 
 extends ../templates/layout
 
+
 block content
+    - var dateNow = new Date().toString()
+    - dateNow = dateNow.slice(0, dateNow.indexOf('(') - 1)
     script(src='/javascripts/create-poll.js')
     h2 Create a poll
     p= message
@@ -12,17 +15,16 @@ block content
         select(class='type-selector' id='type' name='type')
             option(value='tf' selected) True/False
             option(value='mc') M/C
-        input(id='title' name='title' placeholder='Title' required type='text')
+        textarea(id='title' name='title' placeholder='Title' required type='text')
         input(class='tf-input' id='true' name='true' placeholder='True option text' required type='text')
         input(class='tf-input' id='false' name='false' placeholder='False option text' required type='text')
         input(class='mc-input' disabled hidden name='option1' placeholder='Option 1' type='text')
         input(class='mc-input' disabled hidden name='option2' placeholder='Option 2' type='text')
         input(class='mc-input' disabled hidden name='option3' placeholder='Option 3' type='text')
         input(class='mc-input' disabled hidden name='option4' placeholder='Option 4' type='text')
-        input(id='startTime' name='startTime' placeholder='Start time' required type='text' value= new Date())
+        input(id='startTime' name='startTime' placeholder='Start time' required type='text' value=dateNow)
         input(id='endTime' name='endTime' placeholder='End time' type='text')
-        //'Sun, 09 Apr 2017 23:00:00 GMT'
         p
-            strong Time format:
-            =new Date()
+            strong Time format: &nbsp
+            =dateNow
         button(class='pure-button pure-button-primary' id='submit' type='submit') Create poll

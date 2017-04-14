@@ -5,15 +5,20 @@ extends ../templates/layout
 
 block content
     script(src='/javascripts/create-poll.js')
-    h2 Create a poll
+    h2 Poll info
     p= message
     if poll
-        table.pure-table
+        table.pure-table.poll-info
             tr
                 td
                     |Unique ID
                 td
                     =poll.uniqueID
+            tr
+                td
+                    |Title
+                td
+                    =poll.title
             tr
                 td
                     | Type

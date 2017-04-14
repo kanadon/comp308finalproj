@@ -20,8 +20,13 @@ exports.Login = function (req, res, username, password) {
     var session = req.session;
     session.authenticated = true;
     session.user = doc[0];
-    res.redirect('/user/account');
+    res.redirect('/home');
   });
+};
+
+exports.Logout = function (req, res) {
+  req.session.user = null;
+  return res.redirect('/home');
 };
 
 exports.ShowAccountInfo = function (req, res) {

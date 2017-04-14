@@ -15,6 +15,10 @@ router.get('/polls', function(req, res) {
   userController.ShowUserPolls(req, res);
 });
 
+router.get('/logout', function(req, res) {
+  userController.Logout(req, res);
+});
+
 
 router.post('/login', function (req, res) {
   userController.Login(req, res, req.body.username, req.body.password);

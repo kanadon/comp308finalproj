@@ -4,6 +4,7 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/pure-min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
   body
     div#wrapper
       - currentPoll = '';
@@ -17,6 +18,8 @@ html
               a(class='pure-menu-link' href='/user/account') My Account
             li(class='pure-menu-item')
               a(class='pure-menu-link' href='/user/polls') My Polls
+            li(class='pure-menu-item')
+              a(class='pure-menu-link' href='/user/logout') Log out
           else
             li(class='pure-menu-item')
               a(class='pure-menu-link' href='/login') Login

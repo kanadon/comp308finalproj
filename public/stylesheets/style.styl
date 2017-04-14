@@ -22,7 +22,7 @@ a
   cursor: pointer
 
 form.pure-form.pure-form-stacked
-  input, select
+  input, select, textarea
     margin: 10px auto
     width: 300px
 
@@ -30,9 +30,13 @@ form.pure-form.pure-form-stacked
 //  margin: 10px auto 20px auto
 
 form.pure-form.pure-form-stacked.poll
-  input
+  input, textarea
     margin-right: 10px
     width: auto
+
+textarea
+  min-height: 150px
+  resize: vertical
 
 .poll
   label:hover
@@ -59,3 +63,17 @@ table.poll-table tr:hover, table.poll-table input:hover
   background-color: rgb(66, 184, 221)
 .button-report:hover, .button-live:hover
   background-image: linear-gradient(transparent,rgba(0,0,0,.05) 40%,rgba(0,0,0,.1))
+
+
+
+// Mobile styling
+
+@media(max-width: 600px)
+  form
+    width: 100%
+
+  form.pure-form.pure-form-stacked.create-poll-form
+    input, select, textarea
+      width: 90%
+  table.polls-table, table.poll-info
+    width: 90%
