@@ -1,0 +1,32 @@
+//
+   Created by DENIS on 17/04/2017.
+
+doctype html
+html
+    head
+        title= title
+        link(href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet')
+        //link(rel='stylesheet', href='/stylesheets/pure.css')
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        meta(name='viewport' content='width=device-width, initial-scale=1')
+    body
+        div#wrapper
+            div#site-nav
+                //nav
+                a.company-logo(href='/home')
+                    img(src='/images/poll-position.png')
+                    span POLL POSITION
+                ul.nav-links
+                    if session && session.user
+                        li
+                            a(href='/user/account') My Account
+                        li
+                            a(href='/user/polls') My Polls
+                        li
+                            a(href='/user/logout') Log out
+                    else
+                        li(class='pure-menu-item')
+                            a(class='pure-menu-link' href='/login') Login
+                        li(class='pure-menu-item')
+                            a(class='pure-menu-link' href='/register') Register
+            block content

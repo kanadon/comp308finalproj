@@ -1,3 +1,6 @@
+.hidden {
+  display: none !important;
+}
 ul {
   list-style-type: none;
   margin: 0;
@@ -15,7 +18,7 @@ body {
   font-size: 30px;
   margin: 0;
   padding: 0;
-  background: url('/images/concrete_seamless.png');
+  background: url("/images/concrete_seamless.png");
 }
 #wrapper {
   width: 100%;
@@ -56,6 +59,9 @@ body {
 }
 .company-logo:hover {
   cursor: pointer;
+}
+.template {
+  display: none;
 }
 form.pure-form.pure-form-stacked input,
 form.pure-form.pure-form-stacked select,
