@@ -1,24 +1,74 @@
-body
-  //padding: 50px
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
+navHeight = 60px
+logoHeight = 40px
+logoWidth = 150px
+backgroundColourLight = #E9E9E9
+fontSizeGeneral = 30px
+
+//general styles
+ul
+  list-style-type: none
+  margin: 0
+  padding: 0
 a
-  color: #00B7FF
+  color: #605F5F
+  text-decoration: none
+a:hover
+  color: #909090
+
+body
+  font-family: 'PT Sans', sans-serif
+  font-size: fontSizeGeneral
+  margin: 0
+  padding: 0
+  background: url('/images/concrete_seamless.png')
+  //background: url('/images/stardust.png')
+  //background: url('/images/tweed.png')
 
 #wrapper
-  margin: 0 auto
-  max-width: 960px
+  width: 100%
+
+#site-nav
+  background: #FFFFFF
+  height: navHeight
   text-align: center
+  //padding: 0 500px
 
-//.menu
-
+#site-nav > *
+  line-height: navHeight
+  vertical-align: middle
+  //position: relative
+  //top: 50%
+  //transform: translateY(-50%)
 
 .company-logo
-  width: 86px
+  display: inline-block
+  font-size: 0
   img
-    width: 100%
+    width: logoWidth
+    height: logoHeight
+    vertical-align: middle
+  span
+    font-size: fontSizeGeneral
+    margin-left: 30px
+    vertical-align: middle
+
+.company-logo:hover img
+  opacity: 0.8
+
+
+.nav-links
+  display: inline-block
+  margin-left: 400px
+  //float: right
+  //position: relative
+  //top: 50%
+  //transform: translateY(-50%)
+  li
+    display: inline-block
+    margin-left: 20px
     
 .company-logo:hover
-  background-color: transparent
+  //background-color: transparent
   cursor: pointer
 
 form.pure-form.pure-form-stacked

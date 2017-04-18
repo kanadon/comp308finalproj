@@ -2,28 +2,30 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/pure-min.css')
+    link(href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet')
+    //link(rel='stylesheet', href='/stylesheets/pure.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
     meta(name='viewport' content='width=device-width, initial-scale=1')
   body
     div#wrapper
-      - currentPoll = '';
-
-      div(class='pure-menu pure-menu-horizontal menu')
-        a(class='pure-menu-link pure-menu-heading company-logo' href='/home')
-          img(src='/images/poll-position-logo.png')
-        ul(class='pure-menu-list')
-          if session.user
-            li(class='pure-menu-item')
-              a(class='pure-menu-link' href='/user/account') My Account
-            li(class='pure-menu-item')
-              a(class='pure-menu-link' href='/user/polls') My Polls
-            li(class='pure-menu-item')
-              a(class='pure-menu-link' href='/user/logout') Log out
+      div#site-nav
+        //nav
+        a.company-logo(href='/home')
+          img(src='/images/poll-position.png')
+          span POLL POSITION
+        ul.nav-links
+          if session && session.user
+            li
+              a(href='/user/account') My Account
+            li
+              a(href='/user/polls') My Polls
+            li
+              a(href='/user/logout') Log out
           else
             li(class='pure-menu-item')
               a(class='pure-menu-link' href='/login') Login
             li(class='pure-menu-item')
               a(class='pure-menu-link' href='/register') Register
-
+      div#header-image
+        img(src='/images/poll-position-header-image-1.jpg')
       block content
