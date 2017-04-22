@@ -14,11 +14,18 @@ block content
     p= message
     form(action='/poll/create' class='create-poll-form' method='post')
         div#poll-options
-            input(id='pollName' name='pollName' placeholder='Poll name' required type='text')
-            input(id='startTime' name='startTime' placeholder='Start time' required type='text' value=dateNow)
-            input(id='endTime' name='endTime' placeholder='End time' type='text')
+            label
+                span Poll title
+                input(id='pollTitle' name='pollName' required type='text')
+            label
+                span Start time
+                input(id='startTime' name='startTime' placeholder='Start time' required type='text' value=dateNow)
+            label
+                span End time
+                input(id='endTime' name='endTime' placeholder='End time' type='text')
         div#questions
         div#question-adder
+            h3 Add a question
             label
                 span Type
                 select#question-type
@@ -29,44 +36,47 @@ block content
             label#number-of-options.hidden
                 span Number of options
                 //input(pattern='^[1-9][0]{0,1}$' type='text' value='1')
-                input(pattern='^[1-9][0]{0,1}$' type='number' step='1' min='1' max='10' value='1')
-
+                input(pattern='^[1-9][0]{0,1}$' type='number' step='1' min='1' max='10' value='4')
 
             button#add-question(type='button') Add question
 
         // question templates
-        div#template-tf.template(data-order='{{order}}' data-type='tf')
-            label
-                span Question
-                textarea(placeholder='Question text')
-            label
-                span True
-                input(type='text')
-            label
-                span False
-                input(type='text')
-        div#template-mc.template(data-order='{{order}}' data-type='mc')
-            label
-                span Question
-                textarea(placeholder='Question text')
-            | {{#iterate ./numberOfOptions}}
-            label
-                span Option {{index}}
-                input(type='text')
-            | {{/iterate}}
-        div#template-dd.template(data-order='{{order}}' data-type='dd')
-            label
-                span Question
-                textarea(placeholder='Question text')
-            | {{#iterate ./numberOfOptions}}
-            label
-                span Option {{index}}
-                input(type='text')
-            | {{/iterate}}
-        div#template-sa.template(data-order='{{order}}' data-type='dd')
-            label
-                span Question
-                textarea(placeholder='Question text')
+        script#template-tf(data-type='tf' type='text/x-handlebars-template')
+            div(class='question' data-order='{{order}}' data-type='tf')
+                label
+                    span Question
+                    textarea(class='question-title' placeholder='Question text')
+                label
+                    span True text
+                    input(class='question-option' type='text' data-value='true')
+                label
+                    span False text
+                    input(class='question-option' type='text' data-value='false')
+        script#template-mc(data-type='mc' type='text/x-handlebars-template')
+            div(class='question' data-order='{{order}}' data-type='mc')
+                label
+                    span Question
+                    textarea(class='question-title' placeholder='Question text')
+                | {{#iterate ./numberOfOptions}}
+                label
+                    span Option {{index}}
+                    input(class='question-option' type='text' data-value='{{index}}')
+                | {{/iterate}}
+        script#template-dd(data-type='dd' type='text/x-handlebars-template')
+            div(class='question' data-order='{{order}}' data-type='dd')
+                label
+                    span Question
+                    textarea(class='question-title' placeholder='Question text')
+                | {{#iterate ./numberOfOptions}}
+                label
+                    span Option {{index}}
+                    input(class='question-option' type='text' data-value='{{index}}')
+                | {{/iterate}}
+        script#template-sa(data-type='sa' type='text/x-handlebars-template')
+            div(class='question' data-order='{{order}}' data-type='sa')
+                label
+                    span Question
+                    textarea(class='question-title' placeholder='Question text' data-value='answer')
         //textarea(id='title' name='title' placeholder='Title' required type='text')
         //input(class='tf-input' id='true' name='true' placeholder='True option text' required type='text')
         //input(class='tf-input' id='false' name='false' placeholder='False option text' required type='text')

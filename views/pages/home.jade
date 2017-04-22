@@ -13,3 +13,9 @@ block content
         else
             a(href='/register') Sign up
             |  for an account and start creating polls!
+    h3 Check out the latest polls:
+        ul
+            each poll in latestPolls
+                li
+                    a(href='/poll/vote/' + poll['_id'].toString())= poll.title
+

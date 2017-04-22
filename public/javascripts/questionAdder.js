@@ -10,7 +10,8 @@ var QuestionAdder = (function () {
     numberOfOptionsInput,
     addBtn,
     templates = {},
-    currentOrder = 1;
+    currentOrder = 1,
+    domParser = new DOMParser();
 
   function init(options) {
     Handlebars.registerHelper('iterate', function (n, options) {
@@ -40,7 +41,7 @@ var QuestionAdder = (function () {
     typeSelector.addEventListener("change", function () {
       var type = this[this.selectedIndex].value;
 
-      if (type == 'mc')
+      if (type == 'mc' || type == 'dd')
         numberOfOptionsLabel.classList.remove('hidden');
       else
         numberOfOptionsLabel.classList.add('hidden');
@@ -60,7 +61,11 @@ var QuestionAdder = (function () {
       },
       html = template(model);
 
-    questionsContainer.innerHTML += html;
+    // questionsContainer.innerHTML += html;
+    var div = document.createElement('div');
+    div.innerHTML = html;
+    questionsContainer.appendChild(div);
+    // questionsContainer.appendChild(domParser.parseFromString(html, 'text/xml').firstChild);
   }
 
   return {

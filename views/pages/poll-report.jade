@@ -7,23 +7,38 @@ block content
     div#report
         h2 Poll report
         h3= poll.title
-        table.pure-table.poll-report-table
-            thead
-                tr
-                    th Option
-                    th Answers
-            tbody
-                each option in poll.options
+        each question in poll.questions
+            if question.type != 'sa'
+                h4= question.title
+                table
+                    each option in question.options
+                        tr
+                            td
+                                div= option.title
+                            td
+                                div= option.responses
                     tr
-                        td= option.name
-                        td= option.answers
-            tfoot
-                tr
-                    td Total answers
-                    td= totalAnswers
-                tr
-                    td Total responses
-                    td= poll.totalResponses
+                        td
+                            div Total responses
+                        td
+                            div= poll.totalResponses
+        //table
+        //    thead
+        //        tr
+        //            th Option
+        //            th Answers
+        //    tbody
+        //        each option in poll.options
+        //            tr
+        //                td= option.name
+        //                td= option.answers
+        //    tfoot
+        //        tr
+        //            td Total answers
+        //            td= totalAnswers
+        //        tr
+        //            td Total responses
+        //            td= poll.totalResponses
 
     button(id='print' type='button').pure-button.pure-button-primary Print report
 

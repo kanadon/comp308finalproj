@@ -4,23 +4,45 @@
 extends ../templates/layout
 
 block content
+    script(src='/javascripts/vote-poll.js')
     p= message
     if poll
         h2=poll.title
-        form(action='/poll/vote/' + poll.uniqueID class='pure-form pure-form-stacked poll' method='post')
-            table.poll-table
-                if poll.type == 'tf'
-                    each option in poll.options
-                        tr
-                            td
-                                input(id=option.name name=poll.uniqueID type='radio' value=option.name)
-                            td
-                                label(for=option.name)= option.name
-                if poll.type == 'mc'
-                    each option in poll.options
-                        tr
-                            td
-                                input(id=option.name name=option.name type='checkbox' value=option.name)
-                            td
-                                label(for=option.name)= option.name
+        form(action='/poll/vote/' + poll['_id'].toString() method='post' class='poll-vote')
+            each question in poll.questions
+                div.question(data-type=question.type)
+                    h3=question.title
+                    if question.type == 'tf'
+                        each option in question.options
+                            label
+                                input(class='question-option' name=question.title type='radio' value=option.value)
+                                span= option.title
+                    else if question.type == 'mc'
+                        each option in question.options
+                            label
+                                input(class='question-option' type='checkbox' name=option.title value=option.value)
+                                span= option.title
+                    else if question.type == 'dd'
+                            label
+                                select(class='question-option')
+                                    each option in question.options
+                                        option(value=option.value)= option.title
+                    else if question.type == 'sa'
+                        label
+                            textarea(class='question-option')
+                            //table.poll-table
+            //    if poll.type == 'tf'
+            //        each option in poll.options
+            //            tr
+            //                td
+            //                    input(id=option.name name=poll.uniqueID type='radio' value=option.name)
+            //                td
+            //                    label(for=option.name)= option.name
+            //    if poll.type == 'mc'
+            //        each option in poll.options
+            //            tr
+            //                td
+            //                    input(id=option.name name=option.name type='checkbox' value=option.name)
+            //                td
+            //                    label(for=option.name)= option.name
             button(class='pure-button pure-button-primary' id='submit' type='submit') Vote

@@ -9,6 +9,8 @@
 */
 
 var MongoClient = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectID;
+
 
 var url = "mongodb://admin:password@ds113670.mlab.com:13670/pollposition";
 var dbObj;
@@ -80,6 +82,21 @@ module.exports.IsEmailUnique = function (email, callback) {
   });
 };
 
+module.exports.GetLatestPolls = function (callback) {
+  if (!dbObj) throw new Error('database not initialized');
+
+  var polls = dbObj.collection('polls').find(
+    {}
+  ).limit(10);
+
+  polls.toArray(function (err, doc) {
+    if (err)
+      callback(null);
+    else
+      callback(doc);
+  });
+};
+
 module.exports.GetPollsByUser = function (username, callback) {
   if (!dbObj) throw new Error('database not initialized');
 
@@ -99,7 +116,7 @@ module.exports.GetPollByID = function (pollID, callback) {
   if (!dbObj) throw new Error('database not initialized');
 
   var poll = dbObj.collection('polls').find(
-    {uniqueID: pollID}
+    {"_id" : ObjectId(pollID)}
   );
 
   poll.toArray(function (err, doc) {
@@ -110,40 +127,34 @@ module.exports.GetPollByID = function (pollID, callback) {
   });
 };
 
-module.exports.UpdatePoll = function (pollID, options, totalResponses, callback) {
+module.exports.UpdatePoll = function (pollID, updatedPoll, callback) {
   if (!dbObj) throw new Error('database not initialized');
 
-  dbObj.collection('polls').findAndModify(
+  dbObj.collection('polls').updateOne(
     {
-      uniqueID: pollID
+      "_id" : ObjectId(pollID)
     },
-    [['_id', 'asc']],
-    {
-      $set: {
-        totalResponses: totalResponses,
-        options: options
-      }
-    },
-    {},
-    function (err, result) {
-      callback(err, result);
-    }
+    updatedPoll
   );
-};
 
-module.exports.IsPollIDUnique = function (pollID, callback) {
-  if (!dbObj) throw new Error('database not initialized');
+  callback();
 
-  var poll = dbObj.collection('polls').find({
-    uniqueID: pollID
-  });
-
-  poll.toArray(function (err, doc) {
-    if (doc.length !== 0)
-      callback(false);
-    else
-      callback(true);
-  });
+  // dbObj.collection('polls').update(
+  //   {
+  //     "_id" : ObjectId(pollID)
+  //   },
+  //   [['_id', 'asc']],
+  //   {
+  //     $set: {
+  //       totalResponses: totalResponses,
+  //       options: options
+  //     }
+  //   },
+  //   {},
+  //   function (err, result) {
+  //     callback(err, result);
+  //   }
+  // );
 };
 
 module.exports.CreatePoll = function(poll, callback){
@@ -174,7 +185,7 @@ module.exports.DeletePoll = function(pollID, callback){
   if (!dbObj) throw new Error('database not initialized');
 
   dbObj.collection('polls').remove({
-    uniqueID: pollID
+    "_id" : ObjectId(pollID)
   }, function (err) {
     if (err)
       callback(false);

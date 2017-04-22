@@ -99,8 +99,8 @@ exports.Register = function (req, res, username, email, password) {
         password: password
       };
 
-      dbhelper.CreateUser(newUser, function (err) {
-        if (err)
+      dbhelper.CreateUser(newUser, function (success) {
+        if (!success)
           return res.render('pages/register', {message: 'Something went wrong...', session: req.session});
 
         req.session.user = newUser;

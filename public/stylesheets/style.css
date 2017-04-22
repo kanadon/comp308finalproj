@@ -20,8 +20,11 @@ body {
   padding: 0;
   background: url("/images/concrete_seamless.png");
 }
-#wrapper {
-  width: 100%;
+#wrapper-form {
+  text-align: center;
+}
+#wrapper-home {
+  text-align: center;
 }
 #site-nav {
   background: #fff;
@@ -60,19 +63,19 @@ body {
 .company-logo:hover {
   cursor: pointer;
 }
-.template {
-  display: none;
-}
 form.pure-form.pure-form-stacked input,
 form.pure-form.pure-form-stacked select,
 form.pure-form.pure-form-stacked textarea {
   margin: 10px auto;
   width: 300px;
 }
-form.pure-form.pure-form-stacked.poll input,
-form.pure-form.pure-form-stacked.poll textarea {
-  margin-right: 10px;
-  width: auto;
+.polls-table div {
+  padding: 10px;
+}
+form input,
+form textarea,
+form select {
+  display: block;
 }
 textarea {
   min-height: 150px;
@@ -93,6 +96,9 @@ table.poll-report-table td:last-of-type {
 table.poll-table tr:hover,
 table.poll-table input:hover {
   cursor: pointer;
+}
+.button-create {
+  background-color: #093;
 }
 .button-delete {
   background-color: #ca3c3c;
@@ -121,4 +127,52 @@ table.poll-table input:hover {
   table.poll-info {
     width: 90%;
   }
+}
+#poll-options input {
+  margin: 0 auto;
+}
+#question-adder {
+  text-align: center;
+}
+#question-adder * {
+  margin: 0 auto;
+}
+form {
+  text-align: center;
+}
+#questions textarea,
+#questions input {
+  margin: 0 auto;
+}
+form.poll-vote input {
+  display: inline-block;
+}
+form.poll-vote select,
+textarea {
+  margin: 0 auto;
+  width: 300px;
+}
+.button-report,
+.button-live,
+.button-delete,
+.button-create {
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 10px 10px 10px;
+  vertical-align: middle;
+}
+#question-adder {
+  margin-top: 50px;
+}
+#question-adder label {
+  display: block;
+}
+.question[data-type] label {
+  display: block;
+}
+form.poll-vote h3 {
+  margin-bottom: 10px;
+}
+.create-poll-form input {
+  width: 300px;
 }

@@ -9,39 +9,49 @@ document.addEventListener("DOMContentLoaded", function () {
     numberOfOptionsLabel: document.querySelector('#number-of-options'),
     numberOfOptionsInput: document.querySelector('#number-of-options input'),
     addBtn: document.querySelector('#add-question'),
-    templates: document.querySelectorAll('.template')
+    templates: document.querySelectorAll('script[type="text/x-handlebars-template"]')
+  });
+
+  var form = document.forms[0];
+  var submitBtn = document.querySelector('#submit');
+
+  submitBtn.addEventListener('click', function () {
+    event.preventDefault();
+
+    var poll = {
+      title: document.querySelector('#pollTitle').value,
+      questions: []
+    };
+    var url = form.getAttribute('action');
+    var questions = document.querySelectorAll('.question');
+    questions.forEach(function (question) {
+      var pollQuestion = {
+        title: '',
+        options: [],
+        type: question.getAttribute('data-type')
+      };
+      var options = question.querySelectorAll('.question-option');
+
+      pollQuestion.title = question.querySelector('.question-title').value;
+
+      options.forEach(function (option) {
+        pollQuestion.options.push({
+          title: option.value,
+          value: option.getAttribute('data-value'),
+          responses: 0
+        });
+      });
+
+      poll.questions.push(pollQuestion);
+    });
+
+    var req = new XMLHttpRequest();
+    req.addEventListener('load', function (data) {
+      document.forms[0].innerHTML = '<p>Poll created</p>';
+    });
+
+    req.open('POST', url);
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.send(JSON.stringify(poll));
   });
 });
-
-
-// document.addEventListener("DOMContentLoaded", function () {
-//   var tfInputs = document.querySelectorAll(".tf-input");
-//   var mcInputs = document.querySelectorAll(".mc-input");
-//   var typeSelector = document.querySelector(".question-type-selector");
-//
-//   typeSelector.addEventListener("change", function () {
-//     var type = this[this.selectedIndex].value;
-//     if(type == 'tf'){
-//       mcInputs.forEach(function (input) {
-//         input.setAttribute("hidden", "");
-//         input.setAttribute("disabled", "");
-//       });
-//
-//       tfInputs.forEach(function (input) {
-//         input.removeAttribute("hidden", "");
-//         input.removeAttribute("disabled", "");
-//       });
-//     }
-//     else if(type == 'mc'){
-//       tfInputs.forEach(function (input) {
-//         input.setAttribute("hidden", "");
-//         input.setAttribute("disabled", "");
-//       });
-//
-//       mcInputs.forEach(function (input) {
-//         input.removeAttribute("hidden", "");
-//         input.removeAttribute("disabled", "");
-//       });
-//     }
-//   });
-// });

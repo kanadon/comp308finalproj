@@ -6,7 +6,7 @@ extends ../templates/layout
 block content
     h2 My Polls
     p= message
-    a.pure-button.pure-button-primary(href='/poll/create') Create
+    a.button-create(href='/poll/create') Create
     table.pure-table.polls-table
         tbody
             each poll in polls
@@ -14,10 +14,13 @@ block content
                     td
                         span= poll.title
                     td
-                        a.pure-button.button-report(href='/poll/report/' + poll.uniqueID) Report
+                        div
+                            a.pure-button.button-report(href='/poll/report/' + poll['_id'].toString()) Report
                     td
-                        a.pure-button.button-live(href='/poll/vote/' + poll.uniqueID) Live link
+                        div
+                            a.pure-button.button-live(href='/poll/vote/' + poll['_id'].toString()) Live link
                     td
-                        a.pure-button.button-delete(href='/poll/delete/' + poll.uniqueID) Delete
-                    td
-                        a.pure-button(href='/poll/info/' + poll.uniqueID) Info
+                        div
+                            a.pure-button.button-delete(href='/poll/delete/' + poll['_id'].toString()) Delete
+                    //td
+                    //    a.pure-button(href='/poll/info/' + poll['_id'].toString()) Info
