@@ -176,3 +176,6 @@ form.poll-vote h3 {
 .create-poll-form input {
   width: 300px;
 }
+#header-image img {
+  width: 100%;
+}
